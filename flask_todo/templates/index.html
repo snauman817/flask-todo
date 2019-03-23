@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}To-Do List{% endblock %}
+
+{% block content %}
+
+<ul>
+    {% for item in items %}
+    <li>Task: {{ item.task }}, Completed: {{ item.is_completed }}, Created: {{ item.datetime_created }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+{% endblock %}
