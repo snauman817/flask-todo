@@ -33,6 +33,6 @@ ul li {
     padding: 5px 0;
     text-align: center;
 }
-ul li:nth-child(2) {
+ul li:nth-child(2n) {
     background-color: #ececec;
 }
