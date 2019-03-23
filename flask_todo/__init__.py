@@ -1,7 +1,10 @@
-from manager import Manager
+from . import manager
 
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 
+man = manager.Manager()
+man.add_item('thing1')
+man.add_item('thing2')
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -18,10 +21,21 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        man = Manager()
-        man.add_item('thing1')
-        man.add_item('thing2')
-
         return render_template('index.html', items=man.item_list)
+    
+    @app.route('/create', methods=['GET', 'POST'])
+    def create():
+        if request.method == 'GET':
+            return render_template('create.html', task=None)
+        
+        elif request.method == 'POST':
+            task = request.form['task']
+            man.add_item(task)
+
+            return render_template('create.html', task=task)
+    
+    @app.route('/update')
+    def update():
+        pass
 
     return app

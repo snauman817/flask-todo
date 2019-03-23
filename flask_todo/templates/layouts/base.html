@@ -11,6 +11,16 @@
         {% endblock %}
     </head>
     <body>
+        <header>
+            <h1>To-Do List</h1>
+            {% block nav %}
+            <nav>
+                <a href="/">Home</a>
+                <a href="/create">Create</a>
+                <a href="/update">Update</a>
+            </nav>
+            {% endblock %}
+        </header>
         <main>
             {% block content %}{% endblock %}
         </main>

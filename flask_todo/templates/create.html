@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label>
+        Task:
+        <input type="text" value="{{ task }}" name="task" id="task">
+    </label>
+
+    <input type="submit" value="Submit">
+</form>
+
+{% if task is not none %}
+<p>{{ task }} has been added to your To-Do list</p>
+{% endif %}
+{% endblock %}
