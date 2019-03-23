@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+}
+
+header {
+    background-color: #161616;
+    margin-bottom: 20px;
+    padding: 20px 0px;
+}
+
+header h1, header a {
+    color: #aaaaaa;
+    display: inline;
+    justify-items: space-between;
+    position: relative;
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0 auto;
+    width: 50%;
+}
+ul li {
+    padding: 5px 0;
+    text-align: center;
+}
+ul li:nth-child(2) {
+    background-color: #ececec;
+}
