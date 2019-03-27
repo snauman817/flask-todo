@@ -26,7 +26,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        manager.execute("SELECT * FROM items;")
+        manager.execute("SELECT * FROM items ORDER BY date_created;")
 
         return render_template('index.html', items=manager.fetchall())
     
@@ -49,8 +49,28 @@ def create_app(test_config=None):
 
             return render_template('create.html', task=task)
     
-    @app.route('/update')
+    @app.route('/update', methods=['GET', 'POST'])
     def update():
-        pass
+        if request.method == 'GET':
+            manager.execute("SELECT * FROM items WHERE completed = False;")
+
+            return render_template('update.html', items=manager.fetchall())
+        
+        if request.method == 'POST':
+            item_id = request.form['task']
+
+            manager.execute("""
+                UPDATE items
+                SET completed = True
+                WHERE id = %s;
+            """,
+            (item_id)
+            )
+
+            connection.commit()
+
+            manager.execute("SELECT * FROM items;")
+
+            return render_template('update.html', items=manager.fetchall())
 
     return app
