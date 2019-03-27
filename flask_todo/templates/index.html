@@ -6,10 +6,10 @@
 <section class="indexlist">
     <ul>
         {% for item in items %}
-            {% if item.is_completed %}
-            <li class="completed">Task: {{ item.task }}, Completed: {{ item.is_completed }}, Created: {{ item.datetime_created }}</li>
+            {% if item[2] == True %}
+            <li class="completed">Task: {{ item[1] }}, Completed: {{ item[2] }}, Created: {{ item[3] }}</li>
             {% else %}
-            <li>Task: {{ item.task }}, Completed: {{ item.is_completed }}, Created: {{ item.datetime_created }}</li>
+            <li>Task: {{ item[1] }}, Completed: {{ item[2] }}, Created: {{ item[3] }}</li>
             {% endif %}
         {% endfor %}
     </ul>

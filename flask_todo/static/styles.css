@@ -44,6 +44,6 @@ ul li {
 ul li:nth-child(2n) {
     background-color: #ececec;
 }
-ul li .completed {
+ul li.completed {
     color: green;
 }
