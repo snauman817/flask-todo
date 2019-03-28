@@ -8,6 +8,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'flask',
+        'psycopg2',
     ],
     extras_require={
         'test' : [

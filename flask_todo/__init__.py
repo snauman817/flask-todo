@@ -1,14 +1,7 @@
-# from . import manager
-import psycopg2
 import datetime
 
 from flask import Flask, request, render_template
 
-# man = manager.Manager()
-# man.add_item('thing1')
-# man.add_item('thing2')
-connection = psycopg2.connect("dbname=todo host=localhost")
-manager = connection.cursor()
 
 def create_app(test_config=None):
 
@@ -16,6 +9,9 @@ def create_app(test_config=None):
 
     app.config.from_mapping(
         SECRET_KEY='dev',
+        # flask itself has a user for the database
+        DB_NAME='todo',
+        DB_USER='flasktodo_user',
     )
 
     if test_config is None:
@@ -24,11 +20,20 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
+    from . import db
+    db.init_app(app)
+
     @app.route('/')
     def index():
-        manager.execute("SELECT * FROM items ORDER BY date_created;")
+        con = db.get_db()
+        cur = con.cursor()
 
-        return render_template('index.html', items=manager.fetchall())
+        cur.execute("SELECT * FROM items;")
+
+        todo_results = cur.fetchall()
+        cur.close()
+
+        return render_template('index.html', items=todo_results)
     
     @app.route('/create', methods=['GET', 'POST'])
     def create():
@@ -38,39 +43,56 @@ def create_app(test_config=None):
         elif request.method == 'POST':
             task = request.form['task']
 
-            manager.execute("""
-            INSERT INTO items (task, completed, date_created)
-            VALUES (%s, False, %s);
-            """,
-            (task, datetime.datetime.now())
+            con = db.get_db()
+            cur = con.cursor()
+
+            cur.execute("""
+                INSERT INTO items (task, completed, date_created)
+                VALUES (%s, False, %s);
+                """,
+                (task, datetime.datetime.now())
             )
 
-            connection.commit()
+            con.commit()
+            cur.close()
 
             return render_template('create.html', task=task)
     
     @app.route('/update', methods=['GET', 'POST'])
     def update():
         if request.method == 'GET':
-            manager.execute("SELECT * FROM items WHERE completed = False;")
+            con = db.get_db()
+            cur = con.cursor()
 
-            return render_template('update.html', items=manager.fetchall())
+            cur.execute("SELECT * FROM items WHERE completed = False;")
+
+            items = cur.fetchall()
+
+            cur.close()
+
+            return render_template('update.html', items=items)
         
         if request.method == 'POST':
+            con = db.get_db()
+            cur = con.cursor()
+
             item_id = request.form['task']
 
-            manager.execute("""
+            cur.execute("""
                 UPDATE items
                 SET completed = True
                 WHERE id = %s;
-            """,
-            (item_id)
+                """,
+                (item_id)
             )
 
-            connection.commit()
+            con.commit()
 
-            manager.execute("SELECT * FROM items;")
+            cur.execute("SELECT * FROM items WHERE completed = False;")
+            items = cur.fetchall()
 
-            return render_template('update.html', items=manager.fetchall())
+            cur.close()
+
+            return render_template('update.html', items=items)
 
     return app
