@@ -13,6 +13,22 @@
             {% endif %}
         {% endfor %}
     </ul>
+    <form method="post">
+        <label>
+            See All
+            <input type="radio" value="All" name="action" id="all" {% if action == "All" %}checked{% endif %}>
+        </label>
+        <label>
+            Completed
+            <input type="radio" value="Completed" name="action" id="completed" {% if action == "Completed" %}checked{% endif %}>
+        </label>
+        <label>
+            Uncompleted
+            <input type="radio" value="Uncompleted" name="action" id="uncompleted" {% if action == "Uncompleted" %}checked{% endif %}>
+        </label>
+
+        <input type="submit" value="Sort">
+    </form>
 </section>
 
 {% endblock %}

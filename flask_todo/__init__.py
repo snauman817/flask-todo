@@ -23,17 +23,50 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
-    @app.route('/')
+    @app.route('/', methods=['GET', 'POST'])
     def index():
-        con = db.get_db()
-        cur = con.cursor()
+        
+        if request.method == 'GET':
+            con = db.get_db()
+            cur = con.cursor()
 
-        cur.execute("SELECT * FROM items;")
+            cur.execute("SELECT * FROM items;")
 
-        todo_results = cur.fetchall()
-        cur.close()
+            todo_results = cur.fetchall()
+            cur.close()
 
-        return render_template('index.html', items=todo_results)
+            return render_template('index.html', items=todo_results, action="All")
+        
+        elif request.method == 'POST':
+            action = request.form['action']
+
+            con = db.get_db()
+            cur = con.cursor()
+
+            if action == 'All':
+                cur.execute("SELECT * FROM items;")
+
+                todo_results = cur.fetchall()
+                cur.close()
+
+                return render_template('index.html', items=todo_results, action="All")
+
+            elif action == 'Completed':
+                cur.execute("SELECT * FROM items WHERE completed = True;")
+
+                todo_results = cur.fetchall()
+                cur.close()
+
+                return render_template('index.html', items=todo_results, action="Completed")
+
+            elif action == 'Uncompleted':
+                cur.execute("SELECT * FROM items WHERE completed = False;")
+
+                todo_results = cur.fetchall()
+                cur.close()
+
+                return render_template('index.html', items=todo_results, action="Uncompleted")
+            
     
     @app.route('/create', methods=['GET', 'POST'])
     def create():
