@@ -47,3 +47,17 @@ ul li:nth-child(2n) {
 ul li.completed {
     color: green;
 }
+
+section form {
+    margin: 0 auto;
+    padding: 10px 0px;
+    width: 50%;
+}
+section form label {
+    display: block;
+    text-align: center;
+}
+section form input#indexbutton {
+    display: block;
+    margin: 5px auto;
+}
