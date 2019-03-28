@@ -11,10 +11,16 @@ body {
     background-color: #eeeeee;
 }
 
-.indexlist {
+.indexlist, .queryform {
     box-shadow: 1px 1px 1px #aaaaaa;
     margin: 0 auto;
     width: 700px;
+}
+
+.queryform {
+    background-color: #f9f9f9f9;
+    position: relative;
+    top: 30px;
 }
 
 header {
