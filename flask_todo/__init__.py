@@ -12,6 +12,7 @@ def create_app(test_config=None):
         # flask itself has a user for the database
         DB_NAME='todo',
         DB_USER='flasktodo_user',
+        DATABASE_URL = 'https://git.heroku.com/rocky-caverns-35638.git/db',
     )
 
     if test_config is None:

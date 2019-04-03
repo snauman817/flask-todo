@@ -1,3 +1,4 @@
+import os
 import psycopg2
 
 import click
@@ -7,11 +8,17 @@ from flask.cli import with_appcontext
 
 def get_db():
     if 'db' not in g:
+        DB_URL = os.environ.get('DATABASE_URL', None)
+
+        if DB_URL:
+            g.db = psycopg2.connect(DB_URL, sslmode='require')
         # g sets up a connection to the database
-        g.db = psycopg2.connect(
-            f"dbname={current_app.config['DB_NAME']}" +
-            f" user={current_app.config['DB_USER']}"
-        )
+        else:
+            g.db = psycopg2.connect(
+                f"dbname={current_app.config['DB_NAME']}" +
+                f" user={current_app.config['DB_USER']}" +
+                f"host={current_app.config['DATABASE_URL']}"
+            )
 
     return g.db
 
