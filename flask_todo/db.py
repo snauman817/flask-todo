@@ -16,7 +16,7 @@ def get_db():
         else:
             g.db = psycopg2.connect(
                 f"dbname={current_app.config['DB_NAME']}" +
-                f" user={current_app.config['DB_USER']}" +
+                f" user={current_app.config['DB_USER']}"
             )
 
     return g.db
