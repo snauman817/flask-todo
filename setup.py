@@ -10,6 +10,7 @@ setup(
         'flask',
         'gunicorn',
         'psycopg2',
+        'requests',
     ],
     extras_require={
         'test' : [
