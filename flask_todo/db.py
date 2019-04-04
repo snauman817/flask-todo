@@ -17,7 +17,6 @@ def get_db():
             g.db = psycopg2.connect(
                 f"dbname={current_app.config['DB_NAME']}" +
                 f" user={current_app.config['DB_USER']}" +
-                f"host={current_app.config['DATABASE_URL']}"
             )
 
     return g.db
